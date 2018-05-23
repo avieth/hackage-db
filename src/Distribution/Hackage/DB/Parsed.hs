@@ -47,8 +47,7 @@ parseDB = Map.mapWithKey parsePackageData
 parsePackageData :: PackageName -> U.PackageData -> PackageData
 parsePackageData pn (U.PackageData pv vs') =
   mapException (\e -> HackageDBPackageName pn (e :: SomeException)) $
-    Map.mapWithKey (parseVersionData pn) $
-      Map.filterWithKey (\v _ -> v `withinRange` vr) vs'
+    Map.mapWithKey (parseVersionData pn) vs'
   where
     Dependency _ vr | BS.null pv = Dependency pn anyVersion
                     | otherwise  = parseText "preferred version range" (toString pv)
